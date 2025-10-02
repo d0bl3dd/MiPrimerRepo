@@ -1,248 +1,203 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sabores & Co. — Recetario Profesional</title>
-  <meta name="description" content="Recetas profesionales y fáciles de preparar. Buscador, filtros, y pasos detallados para cocinar como un chef." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recetas Gourmet</title>
+
+  <!-- Fuente moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
-    :root{
-      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#ff7a59; --glass: rgba(255,255,255,0.03);
-      --radius:14px; --maxw:1100px; --gap:18px; --fw: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto;
+    :root {
+      --color-principal: #ff7043;
+      --color-secundario: #ff8a65;
+      --color-texto: #333;
+      --color-fondo: #fafafa;
+      --color-card: #fff;
+      --modo-oscuro-fondo: #1e1e1e;
+      --modo-oscuro-texto: #f5f5f5;
+      --modo-oscuro-card: #2a2a2a;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:var(--fw);background:linear-gradient(180deg,#071026 0%, #081026 55%, #071126 100%);color:#e6eef6}
-    .wrap{max-width:var(--maxw);margin:36px auto;padding:28px}
 
-    header{display:flex;align-items:center;gap:18px;margin-bottom:22px}
-    .brand{display:flex;gap:14px;align-items:center}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ffb07f);display:flex;align-items:center;justify-content:center;font-weight:700;color:#081126}
-    h1{margin:0;font-size:20px}
-    p.lead{margin:0;color:var(--muted);font-size:0.95rem}
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background-color: var(--color-fondo);
+      color: var(--color-texto);
+      transition: background 0.3s, color 0.3s;
+    }
 
-    .controls{display:flex;gap:12px;align-items:center;margin:20px 0;flex-wrap:wrap}
-    .search{flex:1;min-width:200px}
-    .search input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:var(--glass);color:inherit}
-    .select, .btn{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
-    .btn{cursor:pointer}
+    header {
+      background: linear-gradient(135deg, var(--color-principal), var(--color-secundario));
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
 
-    main{display:grid;grid-template-columns:1fr;gap:var(--gap)}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:var(--gap)}
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
+    }
 
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);overflow:hidden;box-shadow:0 6px 24px rgba(2,6,23,0.6);display:flex;flex-direction:column}
-    .card img{width:100%;height:160px;object-fit:cover;display:block}
-    .card-body{padding:14px;flex:1;display:flex;flex-direction:column}
-    .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .title{font-size:1.05rem;margin:0}
-    .tags{color:var(--muted);font-size:0.88rem}
-    .excerpt{color:var(--muted);font-size:0.92rem;margin:10px 0 14px}
-    .card-actions{margin-top:auto;display:flex;gap:8px;align-items:center}
-    .small{font-size:0.86rem;color:var(--muted)}
+    nav {
+      background-color: var(--color-secundario);
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-    /* modal */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:26px}
-    .modal.open{display:flex}
-    .panel{width:100%;max-width:900px;background:linear-gradient(180deg,#071026, #08122a);border-radius:18px;padding:18px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 12px 48px rgba(2,6,23,0.7);}
-    .panel-grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
-    .panel img{width:100%;height:320px;object-fit:cover;border-radius:12px}
-    .ingredients{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px}
-    .close{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;cursor:pointer}
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s, transform 0.2s;
+    }
 
-    footer{margin-top:26px;color:var(--muted);font-size:0.9rem;text-align:center}
+    nav a:hover {
+      color: #ffe0b2;
+      transform: scale(1.1);
+    }
 
-    /* responsive */
-    @media(max-width:880px){.panel-grid{grid-template-columns:1fr}}
+    .modo-btn {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      background: white;
+      color: var(--color-principal);
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
 
-    /* small helpers */
-    .pill{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:0.80rem}
-    .rating{display:inline-flex;gap:4px;align-items:center}
-    .star{display:inline-block;width:16px;height:16px}
+    .modo-btn:hover {
+      background: #ffe0b2;
+    }
 
-    /* subtle animation */
-    .card:hover{transform:translateY(-6px);transition:transform .25s}
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 30px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .receta {
+      background: var(--color-card);
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 25px;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+      animation: fadeInUp 0.8s ease both;
+    }
+
+    .receta:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .receta h2 {
+      color: var(--color-principal);
+      margin-top: 0;
+    }
+
+    footer {
+      background: linear-gradient(135deg, var(--color-principal), var(--color-secundario));
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    /* Animación */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 🌙 Modo oscuro */
+    body.dark {
+      background-color: var(--modo-oscuro-fondo);
+      color: var(--modo-oscuro-texto);
+    }
+
+    body.dark .receta {
+      background: var(--modo-oscuro-card);
+    }
+
+    body.dark nav {
+      background-color: #333;
+    }
+
+    body.dark .modo-btn {
+      background: #333;
+      color: white;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo">SC</div>
-        <div>
-          <h1>Sabores &amp; Co.</h1>
-          <p class="lead">Recetas profesionales, paso a paso. Fáciles de seguir y listas para tu mesa.</p>
-        </div>
-      </div>
-      <div style="margin-left:auto;color:var(--muted);font-size:0.9rem">Profesional · Responsive · Accesible</div>
-    </header>
+  <header>
+    <h1>Recetas Gourmet</h1>
+    <p>Descubre sabores únicos y cocina como un chef ⭐</p>
+    <button class="modo-btn" onclick="toggleModo()">🌙 Modo Oscuro</button>
+  </header>
 
-    <section class="controls">
-      <div class="search">
-        <input id="q" placeholder="Buscar receta, ingrediente o técnica..." aria-label="Buscar recetas" />
-      </div>
-      <select id="cat" class="select" aria-label="Filtrar por categoría">
-        <option value="">Todas las categorías</option>
-        <option value="desayuno">Desayuno</option>
-        <option value="principal">Plato Principal</option>
-        <option value="postre">Postre</option>
-        <option value="vegano">Vegano</option>
-      </select>
-      <button id="reset" class="btn">Limpiar</button>
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#postres">Postres</a>
+    <a href="#platos">Platos principales</a>
+    <a href="#bebidas">Bebidas</a>
+  </nav>
+
+  <main>
+    <section class="receta" id="platos">
+      <h2>🍝 Pasta Carbonara</h2>
+      <p><strong>Ingredientes:</strong> Pasta, huevo, panceta, queso parmesano, pimienta negra.</p>
+      <p><strong>Preparación:</strong> Cocina la pasta al dente, mezcla huevos batidos con parmesano y agrega la panceta dorada. Combina todo fuera del fuego para una salsa cremosa.</p>
     </section>
 
-    <main>
-      <section class="grid" id="grid">
-        <!-- Las cards se generan por JavaScript -->
-      </section>
+    <section class="receta" id="postres">
+      <h2>🍫 Brownie Casero</h2>
+      <p><strong>Ingredientes:</strong> Chocolate, mantequilla, azúcar, huevos, harina, nueces.</p>
+      <p><strong>Preparación:</strong> Derrite el chocolate con mantequilla, mezcla con azúcar y huevos, añade la harina y hornea. Disfruta tibio con helado.</p>
+    </section>
 
-      <div id="empty" style="display:none;color:var(--muted);text-align:center;padding:40px">No se encontraron recetas que coincidan.</div>
-    </main>
+    <section class="receta" id="bebidas">
+      <h2>🥭 Batido Tropical</h2>
+      <p><strong>Ingredientes:</strong> Mango, piña, yogur natural, hielo, miel.</p>
+      <p><strong>Preparación:</strong> Licua todos los ingredientes hasta obtener una textura cremosa. Sirve frío y decora con trozos de fruta.</p>
+    </section>
+  </main>
 
-    <footer>
-      &copy; <span id="year"></span> Sabores &amp; Co. — Diseñado para estudiantes y chefs caseros.
-    </footer>
-  </div>
-
-  <!-- Modal de receta -->
-  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="panel" role="document">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <strong id="modal-title">Título receta</strong>
-        <div style="display:flex;gap:8px">
-          <button id="favBtn" class="pill">Guardar</button>
-          <button id="close" class="close">Cerrar</button>
-        </div>
-      </div>
-      <div class="panel-grid">
-        <div>
-          <img id="modal-img" alt="Imagen receta" />
-          <h3>Instrucciones</h3>
-          <div id="modal-steps" style="line-height:1.6;color:var(--muted)"></div>
-        </div>
-        <aside>
-          <div class="ingredients">
-            <h4>Ingredientes</h4>
-            <ul id="modal-ingredients"></ul>
-          </div>
-          <div style="margin-top:12px;color:var(--muted)">
-            <div><strong>Tiempo:</strong> <span id="modal-time"></span></div>
-            <div><strong>Porciones:</strong> <span id="modal-servings"></span></div>
-            <div style="margin-top:8px"><strong>Categoría:</strong> <span id="modal-cat" class="pill"></span></div>
-          </div>
-        </aside>
-      </div>
-    </div>
-  </div>
+  <footer>
+    <p>© 2025 Recetas Gourmet | Hecho con ❤️ y mucho sabor</p>
+  </footer>
 
   <script>
-    // Datos iniciales (puedes ampliarlos o cargar desde JSON externo)
-    const RECIPES = [
-      {
-        id: 'r1', title: 'Pollo al limón con hierbas', category: 'principal', time: '35 min', servings: 4,
-        img: 'https://images.unsplash.com/photo-1604908177522-8d6f6c6b3f16?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=8f4a28a1c3',
-        excerpt: 'Pechugas doradas con salsa cítrica y hierbas frescas. Rápido y delicioso.',
-        ingredients: ['4 pechugas de pollo', '2 cucharadas aceite de oliva', '1 limón (ralladura y jugo)', '1 ramita de romero', 'Sal y pimienta al gusto'],
-        steps: ['Sazona las pechugas con sal y pimienta.', 'Dora en sartén con aceite 4-5 minutos por lado.', 'Añade jugo de limón, ralladura y hierbas. Reduce 3 minutos.', 'Sirve con vegetales al vapor.']
-      },
-      {
-        id: 'r2', title: 'Tostadas de aguacate y huevo pochado', category: 'desayuno', time:'15 min', servings:2,
-        img: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=2d9d6f2b5c',
-        excerpt: 'Clásico brunch con pan artesanal, aguacate cremoso y huevo suave.',
-        ingredients: ['2 rebanadas de pan integral', '1 aguacate maduro', '2 huevos', 'Vinagre (para pochar)', 'Sal, pimienta y limón al gusto'],
-        steps: ['Tuesta el pan.', 'Aplasta el aguacate con sal, pimienta y unas gotas de limón.', 'Pocha los huevos en agua con vinagre (3-4 min).', 'Monta y sirve.']
-      },
-      {
-        id: 'r3', title: 'Brownie de chocolate intenso', category: 'postre', time:'45 min', servings:9,
-        img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=8e2b2a6f6b',
-        excerpt: 'Brownie denso, con corteza crujiente y centro jugoso — para compartir.',
-        ingredients: ['200 g chocolate negro', '150 g mantequilla', '200 g azúcar', '3 huevos', '100 g harina'],
-        steps: ['Derrite chocolate y mantequilla al baño maría.', 'Bate huevos con azúcar, integra el chocolate.', 'Añade harina y mezcla solo hasta integrar.', 'Hornea 25-30 min a 180°C.']
-      },
-      {
-        id: 'r4', title: 'Ensalada mediterránea vegana', category: 'vegano', time:'12 min', servings:2,
-        img: 'https://images.unsplash.com/photo-1543353071-087092ec3939?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=0b6b3b1de6',
-        excerpt: 'Fresca, con tomate cherry, garbanzos y aderezo cítrico.',
-        ingredients: ['200 g garbanzos cocidos', 'Tomates cherry', 'Pepino', 'Aceitunas', 'Aderezo: limón, aceite, sal, orégano'],
-        steps: ['Mezcla todos los ingredientes en un bol.', 'Prepara el aderezo y vierte al gusto.', 'Refrigera 10 minutos y sirve.']
+    function toggleModo() {
+      document.body.classList.toggle("dark");
+      const btn = document.querySelector(".modo-btn");
+      if (document.body.classList.contains("dark")) {
+        btn.textContent = "☀️ Modo Claro";
+      } else {
+        btn.textContent = "🌙 Modo Oscuro";
       }
-    ];
-
-    const grid = document.getElementById('grid');
-    const q = document.getElementById('q');
-    const cat = document.getElementById('cat');
-    const year = document.getElementById('year');
-    const empty = document.getElementById('empty');
-
-    year.textContent = new Date().getFullYear();
-
-    function render(recipes){
-      grid.innerHTML = '';
-      if(!recipes.length){ empty.style.display = 'block'; return } else { empty.style.display='none' }
-      recipes.forEach(r=>{
-        const div = document.createElement('article'); div.className='card';
-        div.innerHTML = `
-          <img src="${r.img}" alt="${r.title}"/>
-          <div class="card-body">
-            <div class="meta"><h3 class="title">${r.title}</h3><div class="pill">${r.time}</div></div>
-            <div class="tags">${r.category} · <span class="small">${r.servings} porciones</span></div>
-            <p class="excerpt">${r.excerpt}</p>
-            <div class="card-actions">
-              <button class="btn view" data-id="${r.id}">Ver receta</button>
-              <div style="margin-left:auto" class="small">Ingredientes: ${r.ingredients.length}</div>
-            </div>
-          </div>
-        `;
-        grid.appendChild(div);
-      })
-      // attach events
-      document.querySelectorAll('.view').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.id)));
     }
-
-    function openModal(id){
-      const r = RECIPES.find(x=>x.id===id);
-      if(!r) return;
-      document.getElementById('modal-title').textContent = r.title;
-      document.getElementById('modal-img').src = r.img;
-      document.getElementById('modal-time').textContent = r.time;
-      document.getElementById('modal-servings').textContent = r.servings;
-      document.getElementById('modal-cat').textContent = r.category;
-      const ul = document.getElementById('modal-ingredients'); ul.innerHTML=''; r.ingredients.forEach(i=>{const li=document.createElement('li');li.textContent=i;ul.appendChild(li)});
-      const steps = document.getElementById('modal-steps'); steps.innerHTML=''; r.steps.forEach((s,i)=>{const p=document.createElement('p');p.innerHTML=`<strong>Paso ${i+1}:</strong> ${s}`;steps.appendChild(p)});
-      document.getElementById('modal').classList.add('open'); document.getElementById('modal').setAttribute('aria-hidden','false');
-      // favorite state
-      updateFavButton(id);
-      favCurrentId = id;
-    }
-
-    document.getElementById('close').addEventListener('click',closeModal);
-    document.getElementById('modal').addEventListener('click',(e)=>{ if(e.target.id==='modal') closeModal() });
-    function closeModal(){ document.getElementById('modal').classList.remove('open'); document.getElementById('modal').setAttribute('aria-hidden','true'); favCurrentId = null }
-
-    // search & filter
-    function filter(){
-      const term = q.value.trim().toLowerCase(); const c = cat.value;
-      const result = RECIPES.filter(r=>{
-        const matchCat = c? r.category===c : true;
-        const inText = r.title.toLowerCase().includes(term) || r.excerpt.toLowerCase().includes(term) || r.ingredients.join(' ').toLowerCase().includes(term);
-        return matchCat && (term? inText : true);
-      })
-      render(result);
-    }
-    q.addEventListener('input',filter); cat.addEventListener('change',filter); document.getElementById('reset').addEventListener('click',()=>{q.value='';cat.value='';filter()});
-
-    // favorites using localStorage
-    const STORAGE_KEY = 'sabores_favs_v1';
-    function getFavs(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [] }catch{ return [] }}
-    function saveFavs(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)) }
-    let favCurrentId = null;
-    document.getElementById('favBtn').addEventListener('click',()=>{
-      if(!favCurrentId) return; const arr=getFavs(); const idx = arr.indexOf(favCurrentId);
-      if(idx>-1){ arr.splice(idx,1) } else { arr.push(favCurrentId) }
-      saveFavs(arr); updateFavButton(favCurrentId);
-    })
-    function updateFavButton(id){ const b = document.getElementById('favBtn'); const arr = getFavs(); if(arr.includes(id)) b.textContent='Guardado ✓'; else b.textContent='Guardar' }
-
-    // render inicial
-    render(RECIPES);
   </script>
 </body>
 </html>
